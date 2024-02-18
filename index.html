@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/utility.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha/cropper.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="js/cropper.js"></script>
+    <script src="js/index.js"></script>
+    <title>Photo Editor</title>
+</head>
+<body>
+    
+    <div class="canvas">
+        <img id="target" crossorigin="anonymous" style="visibility: hidden;" height="300px" src="/assets/sample-image.jpeg" />        
+    </div>
+    
+    <nav>
+        <div class="logo-container">
+            <img src="/assets/logo.png" height="20px">
+        </div>
+        <div id="crop-actions">
+            <i id="confirm-crop" class="bi bi-check-circle"></i>
+            <i id="cancel-crop" class="bi bi-x-circle"></i>
+        </div>
+        <div class="upload-download-action">
+            <input id="upload-image-input" accept="image/*" type="file" style="display: none;">
+            <button id="upload-image"><i class="bi bi-upload"></i> Upload</button>
+            <button id="download-image" class=""><i class="bi bi-download"></i> Download<div class="loader"></div></button>
+        </div>
+    </nav>
+
+    <div id="image-controls" class="image-panes">
+        <div class="position-controls">
+            <div class="input-contol">
+                <span class="input-label">X</span>
+                <input id="image-x" type="text" class="form-control" value="---">
+            </div>
+            <div class="input-contol">
+                <span class="input-label">Y</span>
+                <input id="image-y" type="text" class="form-control" value="---">
+            </div>
+            <div></div>
+
+            <div class="input-contol">
+                <span class="input-label">W</span>
+                <input id="image-width" type="text" class="form-control" value="---">
+            </div>
+            <div class="input-contol">
+                <span class="input-label">H</span>
+                <input id="image-height" type="text" class="form-control" value="---">
+            </div>
+            <div><i id="lock-aspect-ratio" data-locked="true" class="active bi bi-link"></i></div>
+            
+            <div class="input-contol">
+                <span class="input-label">&#8736;</span>
+                <input id="rotate-degree" type="text" class="form-control" value="0°">
+            </div>            
+            <div class="input-contol">
+                <span class="input-label">&#8834;</span>
+                <input id="image-border-radius" type="text" class="form-control" value="0">
+            </div>            
+            <div></div>
+        </div>
+
+        <div class="adjustement-controls">
+            <div>
+                <label for="brightnessSlider">Brightness<span class="adjustement-label" id="brightnessValue">100%</span></label>            
+                <input id="brightnessSlider" type="range" min="0" max="200" value="100" list="saturation-brightness-markers">
+            </div>
+            
+            <div>
+                <label for="contrastSlider">Contrast<span class="adjustement-label" id="contrastValue">1</span></label>            
+                <input id="contrastSlider" type="range" min="0" max="2" value="1" step="0.05" list="contrast-markers">
+            </div>
+
+            <div>
+                <label for="saturationSlider">Saturation<span class="adjustement-label" id="saturationValue">100%</span></label>            
+                <input id="saturationSlider" type="range" min="0" max="200" value="100" list="saturation-brightness-markers">
+            </div>            
+
+            <div>
+                <label for="blurSlider">Blur<span class="adjustement-label" id="blurValue">0</span></label>            
+                <input id="blurSlider" type="range" min="0" max="100" value="0" list="slider-markers">
+            </div>
+            
+            <div>
+                <label for="hueSlider">Hue<span class="adjustement-label" id="hueValue">0</span></label>            
+                <input id="hueSlider" type="range" min="0" max="360" value="0" list="slider-markers">
+            </div>
+
+            <datalist id="slider-markers">
+                <option value="0">
+            </datalist>
+            <datalist id="contrast-markers">
+                <option value="1">
+            </datalist>
+            <datalist id="saturation-brightness-markers">
+                <option value="100">
+            </datalist>
+            
+        </div>
+
+        <div class="drop-shadow-controls">
+            <span class="drop-shadow-label">Drop Shadow</span>
+            <div class="drop-shadow-options">
+                <div class="input-contol">
+                    <span class="input-label">X</span>
+                    <input id="drop-shadow-x" type="text" class="form-control" value="0">
+                </div>                
+                <div class="input-contol">
+                    <span class="input-label" style="margin-right: 13px;">Blur</span>
+                    <input id="drop-shadow-blur" type="text" class="form-control" value="0">
+                </div>
+                <div class="input-contol">
+                    <span class="input-label">Y</span>
+                    <input id="drop-shadow-y" type="text" class="form-control" value="0">
+                </div>
+                <div class="input-contol" id="drop-shadow-color-container">                    
+                    <input id="drop-shadow-color" type="color">
+                    <input id="drop-shadow-color-value" type="text" value="#000000">                                    
+                </div>
+                
+            </div>                        
+        </div>
+
+        <div class="stroke-controls">
+            <span>Stroke</span>
+            <div class="stroke-container">
+                <div id="stroke-color">
+                    <input type="color">
+                    <input type="text" value="#000000">                
+                </div>            
+    
+                <div id="stroke-width">
+                    <i class="bi bi-border-width"></i>
+                    <input id="stroke-width-input" type="text" value="0">
+                </div>            
+            </div>  
+            <div>
+                <select id="stroke-type">
+                    <option value="inside">Inside</option>
+                    <option value="outside">Outside</option>
+                </select>
+            </div>                      
+        </div>
+    </div>
+
+    <div id="options-container" class="image-panes">
+        <i id="move-btn" class="active bi bi-arrows-move"></i>
+        <i id="crop-btn" class="bi bi-crop"></i>        
+        <i id="flip-horrizontal-btn" class="bi bi-symmetry-vertical"></i>
+        <i id="flip-vertical-btn" class="bi bi-symmetry-horizontal"></i>
+    </div>
+
+    <div id="crop-options" class="image-panes">
+        <div class="ar" data-aspectratio="0">
+            <div class="ar-0-0"></div>
+            <span>Free</span>
+        </div>
+        <div class="ar" data-aspectratio="1">
+            <div class="ar-1-1"></div>
+            <span>1:1</span>
+        </div>
+        <div class="ar" data-aspectratio="1.7777">
+            <div class="ar-16-9"></div>
+            <span>16:9</span>
+        </div>
+        <div class="ar" data-aspectratio="1.5">
+            <div class="ar-3-2"></div>                        
+            <span>3:2</span>
+        </div>
+        <div class="ar" data-aspectratio="0.8">
+            <div class="ar-4-5"></div>
+            <span>4:5</span>
+        </div>
+    </div>
+    
+</body>
+</html>
