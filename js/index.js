@@ -368,6 +368,8 @@ let cropper
         imageFilters["blur"] = "0px"
         imageFilters["hue-rotate"] = "0deg"
         imageFilters["drop-shadow"] = "0px 0px 0px black"  
+
+        imageBorderRadius = "0"
         
         document.getElementById('rotate-degree').value = '0°'
         document.getElementById('image-border-radius').value = '0'
