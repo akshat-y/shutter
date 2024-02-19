@@ -75,7 +75,9 @@ let cropper
             document.getElementById(element).addEventListener('keydown', (event) => {
                 if (event.key == 'Enter') 
                     document.getElementById(element).blur()
-                if(isNaN(event.key) && event.key !== 'Backspace' && event.key !== 'Tab')
+
+                const allowedKeys = ['Backspace', 'Tab', '-', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown']
+                if(isNaN(event.key) && (!allowedKeys.includes(event.key)) )
                     event.preventDefault()
             })
         });
@@ -314,9 +316,9 @@ let cropper
 
         const dropShadow = imageFilters["drop-shadow"]
         let [dropShadowX, dropShadowY, dropShadowBlur, dropShadowColor] = dropShadow.split(" ");
-        dropShadowX = parseInt(dropShadowX)
-        dropShadowY = parseInt(dropShadowY)
-        dropShadowBlur = parseInt(dropShadowBlur)
+        dropShadowX = Math.abs(parseInt(dropShadowX))
+        dropShadowY = Math.abs(parseInt(dropShadowY))
+        dropShadowBlur = Math.abs(parseInt(dropShadowBlur))
         const sum = dropShadowX + dropShadowY + dropShadowBlur
 
         outputCanvas.width = croppedCanvas.width + (sum*2)
