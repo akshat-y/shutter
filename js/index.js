@@ -228,6 +228,7 @@ let cropper
             reader.readAsDataURL(file);
 
             resetFilters()
+            applyFilters()
         });
 
         document.getElementById('drop-shadow-color').addEventListener('input', function(event) {
