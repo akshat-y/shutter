@@ -81,6 +81,14 @@ let cropper
                     event.preventDefault()
             })
         });
+
+        document.getElementById('compare-effects').addEventListener('mouseenter', function(){
+            removeFilters()
+        })
+
+        document.getElementById('compare-effects').addEventListener('mouseleave', function(){
+            applyFilters()
+        })
         
         document.getElementById('rotate-degree').addEventListener('blur', function() {
             const value = this.value;
@@ -384,6 +392,20 @@ let cropper
         document.getElementById("blurSlider").value = 0
         document.getElementById("hueSlider").value = 0
         
+    }
+
+    function removeFilters(){
+        cropper.image.style.filter = 'none'
+        document.getElementById('target').style.filter = 'none'
+        cropper.viewBoxImage.style.filter = 'none'
+        cropper.sizingImage.style.filter = 'none'
+        cropper.element.style.filter = 'none'
+        
+        cropper.image.style.borderRadius = '0px'
+        document.getElementById('target').style.borderRadius = '0px'
+        cropper.viewBoxImage.style.borderRadius = '0px'
+        cropper.sizingImage.style.borderRadius = '0px'
+        cropper.element.style.borderRadius = '0px'
     }
 
 })();
